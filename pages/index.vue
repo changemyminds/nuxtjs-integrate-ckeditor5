@@ -4,12 +4,10 @@
   </client-only>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      text: 'Hello World!!',
-    }
-  },
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator'
+@Component
+export default class extends Vue {
+  private text = 'Hello World!!'
 }
 </script>

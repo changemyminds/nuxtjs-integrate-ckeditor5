@@ -1,35 +1,35 @@
-const path = require('path')
-const CKEditorWebpackPlugin = require("@ckeditor/ckeditor5-dev-webpack-plugin")
-const CKEditorStyles = require("@ckeditor/ckeditor5-dev-utils").styles
+import type { NuxtConfig } from '@nuxt/types'
 
-export default {
+const path = require('path')
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
+const CKEditorStyles = require('@ckeditor/ckeditor5-dev-utils').styles
+
+const config: NuxtConfig = {
   ssr: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
 
   head: {
     title: 'nuxtjs-integrate-ckeditor5',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'en',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     {
-      src: '~/plugins/ckeditor.js', ssr: false
+      src: '~/plugins/ckeditor.ts',
+      ssr: false,
     },
   ],
 
@@ -40,12 +40,11 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
+    '@nuxt/typescript-build',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-  ],
+  modules: [],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -56,33 +55,40 @@ export default {
       // ERROR  [CKEditorWebpackPlugin] Error: No translation has been found for the zh language.
       new CKEditorWebpackPlugin({
         // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
-        language: "zh",
+        language: 'zh',
         additionalLanguages: 'all',
         addMainLanguageTranslationsToAllAssets: true,
-      })
+      }),
     ],
 
     // If you don't add postcss, the CKEditor css will not work.
     postcss: CKEditorStyles.getPostCssConfig({
       themeImporter: {
-        themePath: require.resolve("@ckeditor/ckeditor5-theme-lark")
+        themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
       },
-      minify: true
+      minify: true,
     }),
 
     extend(config, ctx) {
       // If you do not exclude and use raw-loader to load svg, the following errors will be caused.
       // Cannot read property 'getAttribute' of null
-      const svgRule = config.module.rules.find(item => {
-        return /svg/.test(item.test);
-      })
-      svgRule.exclude = [path.join(__dirname, 'node_modules', '@ckeditor')];
+      if (config.module) {
+        const svgRule = config.module.rules.find((item) => {
+          return /svg/.test(`${item.test}`)
+        })
 
-      // add svg to load raw-loader
-      config.module.rules.push({
-        test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-        use: ["raw-loader"]
-      })
-    }
-  }
+        if (svgRule) {
+          svgRule.exclude = [path.join(__dirname, 'node_modules', '@ckeditor')]
+        }
+
+        // add svg to load raw-loader
+        config.module.rules.push({
+          test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+          use: ['raw-loader'],
+        })
+      }
+    },
+  },
 }
+
+export default config

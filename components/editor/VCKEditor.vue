@@ -6,7 +6,10 @@
   ></ckeditor>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, VModel, Vue } from 'nuxt-property-decorator'
+import { EditorConfig } from 'ckeditor5-support'
+
 import CKEditor from '@ckeditor/ckeditor5-vue2'
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 
@@ -27,59 +30,40 @@ import ImageResizeEditing from '@ckeditor/ckeditor5-image/src/imageresize/imager
 import ImageResizeHandles from '@ckeditor/ckeditor5-image/src/imageresize/imageresizehandles'
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter'
 
-export default {
-  name: 'VCKEditor',
-  components: { ckeditor: CKEditor.component },
-  props: {
-    value: {
-      type: String,
+@Component({ name: 'VCKEditor', components: { ckeditor: CKEditor.component } })
+export default class extends Vue {
+  @VModel()
+  private editorData!: string
+  private editor = ClassicEditor
+  private editorConfig: EditorConfig = {
+    plugins: [
+      Bold,
+      Italic,
+      Underline,
+      Strikethrough,
+      Heading,
+      Essentials,
+      ImageUpload,
+      ImageInsert,
+      AutoImage,
+      Image,
+      ImageResizeEditing,
+      ImageResizeHandles,
+      Base64UploadAdapter,
+    ],
+    toolbar: {
+      items: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        '|',
+        'insertImage',
+      ],
     },
-  },
-  computed: {
-    editorData: {
-      get() {
-        return this.value
-      },
-      set(value) {
-        this.$emit('input', value)
-      },
-    },
-  },
-  data() {
-    return {
-      editor: ClassicEditor,
-      editorConfig: {
-        plugins: [
-          Bold,
-          Italic,
-          Underline,
-          Strikethrough,
-          Heading,
-          Essentials,
-          ImageUpload,
-          ImageInsert,
-          AutoImage,
-          Image,
-          ImageResizeEditing,
-          ImageResizeHandles,
-          Base64UploadAdapter,
-        ],
-
-        toolbar: {
-          items: [
-            'heading',
-            '|',
-            'bold',
-            'italic',
-            'underline',
-            'strikethrough',
-            '|',
-            'insertImage',
-          ],
-        },
-        language: 'zh',
-      },
-    }
-  },
+    language: 'zh',
+  }
 }
 </script>
