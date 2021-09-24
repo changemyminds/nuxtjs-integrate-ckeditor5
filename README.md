@@ -1,4 +1,4 @@
-# Nuxtjs integrate CKEditor5
+# Nuxtjs integrate CKEditor5 (Javascript)
 
 ## Demo
 Custom editor-classic from source and import image resize plugin.
