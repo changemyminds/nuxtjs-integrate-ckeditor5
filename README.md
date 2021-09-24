@@ -32,6 +32,10 @@ This error will trigger by setting `ssr: true` in the `nuxt.config.js` and it do
  
 You can find the 300th line in the `_getTranslationAssets` method in the source code `node_modules\@ckeditor\ckeditor5-dev-utils\lib\translations\multiplelanguagetranslationservice.js`. It will trigger an error message but does not affect the operation.
 
+## Switch Version
+- [Javascript](https://github.com/changemyminds/nuxtjs-integrate-ckeditor5/tree/master)
+- [Typescript](https://github.com/changemyminds/nuxtjs-integrate-ckeditor5/tree/typescript)
+
 ## Reference
 - https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v2.html
 - https://github.com/ckeditor/ckeditor5/issues/6071#issue-549499696
